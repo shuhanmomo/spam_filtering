@@ -33,7 +33,7 @@ def get_counts(file_list):
     return word_count
 
 
-def get_log_probabilities(file_list, alpha=1.0):
+def get_log_probabilities(file_list, alpha=0.01):
     """
     Computes log-probabilities for each word that occurs in the files in
     file_list.
@@ -134,10 +134,12 @@ def classify_message(
     spam_log_prior, ham_log_prior = log_prior_by_category
     words_in_message = set(util.get_words_in_file(message_filename))
     # Initialize total log probabilities for each category
-    # s = 0.9999
+
     total_log_prob_spam = spam_log_prior
     total_log_prob_ham = ham_log_prior
-
+    s = 0.9999
+    total_log_prob_spam = np.log(s)
+    total_log_prob_ham = np.log(1 - s)
     # Accumulate log probabilities for each word in the message
     for word in words_in_message:
         total_log_prob_spam += spam_log_probs[word]
